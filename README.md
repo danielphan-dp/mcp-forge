@@ -2,6 +2,11 @@
 
 Production-focused MCP server with Streamable HTTP and stdio transports.
 
+## Requirements
+
+- **Node.js 24.x LTS** (Krypton) or later
+- npm 11+
+
 ## Quickstart
 
 ```bash
