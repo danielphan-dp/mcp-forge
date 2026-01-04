@@ -1,4 +1,5 @@
-import express, { type NextFunction, type Request, type Response } from "express";
+import express from "express";
+import type { NextFunction, Request, Response } from "express";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import { randomUUID } from "node:crypto";
@@ -123,7 +124,10 @@ function metricsApiKeyGuard(req: Request, res: Response, next: NextFunction) {
     : undefined;
   const apiKeyHeader = req.get("x-api-key");
 
-  if (bearer === config.metricsApiKey || apiKeyHeader === config.metricsApiKey) {
+  if (
+    bearer === config.metricsApiKey ||
+    apiKeyHeader === config.metricsApiKey
+  ) {
     next();
     return;
   }
@@ -217,7 +221,10 @@ function securityHeaders(_req: Request, res: Response, next: NextFunction) {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("Referrer-Policy", "no-referrer");
-  res.setHeader("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
+  res.setHeader(
+    "Permissions-Policy",
+    "geolocation=(), microphone=(), camera=()"
+  );
   res.setHeader("Cross-Origin-Resource-Policy", "same-site");
   next();
 }
@@ -330,7 +337,8 @@ const createTransport = (onInitialized?: (sessionId: string) => void) =>
     sessionIdGenerator:
       config.sessionMode === "stateful" ? () => randomUUID() : undefined,
     enableJsonResponse: config.enableJsonResponse,
-    retryInterval: config.retryIntervalMs > 0 ? config.retryIntervalMs : undefined,
+    retryInterval:
+      config.retryIntervalMs > 0 ? config.retryIntervalMs : undefined,
     eventStore,
     onsessioninitialized: onInitialized,
     onsessionclosed: async (sessionId) => {
@@ -340,7 +348,9 @@ const createTransport = (onInitialized?: (sessionId: string) => void) =>
     },
     enableDnsRebindingProtection: config.enableDnsRebindingProtection,
     allowedHosts: config.allowedHosts.length ? config.allowedHosts : undefined,
-    allowedOrigins: config.allowedOrigins.length ? config.allowedOrigins : undefined,
+    allowedOrigins: config.allowedOrigins.length
+      ? config.allowedOrigins
+      : undefined,
   });
 
 const mcpRouter = express.Router();

@@ -22,7 +22,7 @@ export type Config = {
   allowedHosts: string[];
   enableCors: boolean;
   enableDnsRebindingProtection: boolean;
-  rateLimit: RateLimitConfig | null;
+  rateLimit?: RateLimitConfig | null;
   logLevel: LogLevel;
   shutdownTimeoutMs: number;
   sessionMode: SessionMode;

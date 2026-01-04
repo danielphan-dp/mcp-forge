@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import client from "prom-client";
+import * as client from "prom-client";
 
 const registry = new client.Registry();
 
@@ -27,7 +27,11 @@ function routeLabel(req: Request) {
   return `${req.baseUrl}${req.path}`;
 }
 
-export function metricsMiddleware(req: Request, res: Response, next: NextFunction) {
+export function metricsMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const route = routeLabel(req);
   httpRequestsInFlight.inc({ method: req.method, route });
   const start = process.hrtime.bigint();
